@@ -47,6 +47,7 @@ public class MyArray {
 	}
 
 	// task1.2
+	// getMissingValues
 	public int[] getMissingValues() {
 		int max = arr[arr.length - 1];
 		int min = arr[0];
@@ -71,12 +72,61 @@ public class MyArray {
 		}
 		return result;
 	}
+	//fillMissingValues
+	public int[] fillMissingValues(int k) {
+		int[] result = arr.clone();
+		int y = 0;
+		for (int i = 0; i < arr.length; i++) {
+			int index1 = i - ((k + 1) / 2);
+			int index2 = i + ((k + 1) / 2);
+			if (arr[0] == -1 && i == 0) {
+				for (int a = 1; a <= k; a++) {
+					y += arr[a];
+				}
+				result[0] = y / k;
+			}
+			if (arr[i] == -1 && i == arr.length - 1) {
+				for (int b = arr.length - 1; b >= arr.length - 1 - k; b--) {
+					y += arr[b];
+				}
+				result[arr.length - 1] = y / k;
+			}
+			if (arr[i] == -1 && arr[0] != -1 && arr[arr.length - 1] != -1) {
+				if (k % 2 == 0) {
+					for (int j = index1; j <= index2; j++) {
+						if (arr[j] != -1) {
+							y += arr[j];
+						}
+					}
+				} else {
+					if (arr[index1] < arr[index2]) {
+						for (int z = index1; z < index2; z++) {
+							if (arr[z] != -1) {
+								y += arr[z];
+							}
+						}
+					}
+					if (arr[index1] > arr[index2]) {
+						for (int z = index2; z > index1; z--) {
+							if (arr[z] != -1) {
+								y += arr[z];
+							}
+						}
+					}
+				}
+				result[i] = y / k;
+			}
+		}
+		return result;
+	}
+
 
 	public static void main(String[] args) {
 		int[] arr1 = { 1, 2, 3 };
 		int[] arr2 = { 1, 2, 2, 2, 3, 2, 3, 4, 4, 4, 4, 7, 2, 2, 2, 8, 9 };
 		int[] arr3 = { 1, 2, 3, 5, 6, 8 };
-		
+		int[] arr4 = { 10, 11, 12, -1, 14, 10, 17, 19, 20 };
+
 		MyArray re1 = new MyArray(arr1);
 		System.out.println(Arrays.toString(re1.mirror()));
 
@@ -85,5 +135,8 @@ public class MyArray {
 
 		MyArray re3 = new MyArray(arr3);
 		System.out.println(Arrays.toString(re3.getMissingValues()));
+		
+		MyArray re4 = new MyArray(arr4);
+		System.out.println(Arrays.toString(re4.fillMissingValues(3)));
 	}
 }
